@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>长江中下游陶瓷发展史</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;600&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Noto Serif SC", "Songti SC", serif;
+            background: #F8F6F1;
+            color: #2C2C2C;
+            line-height: 1.8;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* 自定义光标 */
+        .cursor {
+            position: fixed;
+            width: 20px;
+            height: 20px;
+            border: 1px solid rgba(44, 44, 44, 0.6);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9999;
+            transition: transform 0.1s;
+            mix-blend-mode: difference;
+        }
+
+        .cursor-follower {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: radial-gradient(circle, rgba(123, 158, 135, 0.2) 0%, rgba(123, 158, 135, 0.05) 50%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 9998;
+            transition: transform 0.3s ease-out;
+            filter: blur(3px);
+        }
+
+        /* 水墨晕染效果 */
+        .ink-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.4;
+        }
+
+        /* 首页 */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            overflow: hidden;
+        }
+
+        /* 标题 */
+        .hero-title {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .hero-title h1 {
+            font-size: 48px;
+            font-weight: 300;
+            letter-spacing: 16px;
+            margin-bottom: 20px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        .hero-title .subtitle {
+            font-size: 16px;
+            color: #666;
+            letter-spacing: 4px;
+            writing-mode: vertical-rl;
+            text-orientation: upright;
+            display: inline-block;
+            vertical-align: top;
+            margin-top: 20px;
+        }
+
+        .hero-title .seal {
+            display: inline-block;
+            width: 60px;
+            height: 60px;
+            border: 2px solid #C17F59;
+            color: #C17F59;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            writing-mode: vertical-rl;
+            margin-left: 30px;
+            vertical-align: top;
+        }
+
+        /* 水墨时间轴 - 散落布局 */
+        .ink-timeline {
+            position: relative;
+            width: 100%;
+            max-width: 1200px;
+            height: 600px;
+            z-index: 10;
+        }
+
+        .era-node {
+            position: absolute;
+            cursor: pointer;
+            transition: all 0.5s ease;
+        }
+
+        .era-node:hover {
+            z-index: 100;
+        }
+
+        .era-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            position: relative;
+            overflow: visible;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .era-node:hover .era-circle {
+            transform: scale(1.4);
+            box-shadow: 0 25px 80px rgba(0,0,0,0.25), 0 0 60px var(--era-color);
+        }
+
+        /* 悬浮时的额外晕染层 */
+        .era-circle .ink-halo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--era-color) 0%, transparent 50%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            filter: blur(15px);
+        }
+
+        .era-node:hover .era-circle .ink-halo {
+            opacity: 0.5;
+            animation: haloPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes haloPulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); }
+            50% { transform: translate(-50%, -50%) scale(1.3); }
+        }
+
+        /* 水墨晕染背景 - 多层效果 */
+        .era-circle::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, var(--era-color) 0%, transparent 60%);
+            opacity: 0.8;
+            animation: inkSpread 4s ease-out infinite;
+            filter: blur(8px);
+        }
+
+        .era-circle::after {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(ellipse at 30% 30%, rgba(255,255,255,0.3) 0%, transparent 50%);
+            opacity: 0.5;
+            animation: inkRipple 5s ease-in-out infinite;
+        }
+
+        @keyframes inkSpread {
+            0%, 100% { transform: scale(0.8) rotate(0deg); opacity: 0.5; }
+            50% { transform: scale(1.3) rotate(5deg); opacity: 0.9; }
+        }
+
+        @keyframes inkRipple {
+            0%, 100% { transform: scale(1) translate(0, 0); }
+            33% { transform: scale(1.1) translate(-5%, 5%); }
+            66% { transform: scale(0.95) translate(5%, -5%); }
+        }
+
+        /* 各时期颜色与大小（按年代跨度比例） */
+        /* 史前：约3000年，最大 */
+        .era-prehistoric { --era-color: #8B7355; left: 8%; top: 15%; }
+        .era-prehistoric .era-circle { width: 160px; height: 160px; background: linear-gradient(135deg, #8B7355, #5C4A3A); }
+
+        /* 先秦：约1780年 */
+        .era-pre-qin { --era-color: #9CA668; left: 22%; top: 55%; }
+        .era-pre-qin .era-circle { width: 140px; height: 140px; background: linear-gradient(135deg, #9CA668, #7A8547); }
+
+        /* 秦汉：约440年 */
+        .era-han { --era-color: #7B9E87; left: 38%; top: 12%; }
+        .era-han .era-circle { width: 100px; height: 100px; background: linear-gradient(135deg, #7B9E87, #5A7A66); }
+
+        /* 六朝：约370年 */
+        .era-six { --era-color: #6A9A7A; left: 52%; top: 48%; }
+        .era-six .era-circle { width: 95px; height: 95px; background: linear-gradient(135deg, #6A9A7A, #4A7A5A); }
+
+        /* 隋唐：约330年，最短 */
+        .era-tang { --era-color: #5A8A6A; left: 68%; top: 22%; }
+        .era-tang .era-circle { width: 90px; height: 90px; background: linear-gradient(135deg, #5A8A6A, #3A6A4A); }
+
+        /* 宋元：约410年 */
+        .era-song { --era-color: #A8C4B0; left: 42%; top: 72%; }
+        .era-song .era-circle { width: 100px; height: 100px; background: linear-gradient(135deg, #A8C4B0, #7B9E87); }
+
+        /* 明清：约540年 */
+        .era-ming { --era-color: #1E3A5F; left: 82%; top: 58%; }
+        .era-ming .era-circle { width: 110px; height: 110px; background: linear-gradient(135deg, #1E3A5F, #0D1F3A); }
+
+        /* 时期标签 */
+        .era-label {
+            position: absolute;
+            white-space: nowrap;
+            opacity: 0;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+
+        .era-node:hover .era-label {
+            opacity: 1;
+        }
+
+        .era-name {
+            font-size: 24px;
+            font-weight: 400;
+            letter-spacing: 8px;
+            color: #2C2C2C;
+            margin-bottom: 8px;
+        }
+
+        .era-keyword {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        /* 标签位置 - 随机分布 */
+        /* 标签位置 - 根据圆圈大小比例调整 */
+        .era-prehistoric .era-label { left: 190px; top: 50%; transform: translateY(-50%); }
+        .era-pre-qin .era-label { right: 165px; top: 50%; transform: translateY(-50%); text-align: right; }
+        .era-han .era-label { left: 50%; top: 125px; transform: translateX(-50%); text-align: center; }
+        .era-six .era-label { left: 120px; top: 50%; transform: translateY(-50%); }
+        .era-tang .era-label { right: 115px; top: 50%; transform: translateY(-50%); text-align: right; }
+        .era-song .era-label { left: 50%; bottom: 125px; transform: translateX(-50%); text-align: center; }
+        .era-ming .era-label { right: 135px; top: 50%; transform: translateY(-50%); text-align: right; }
+
+        /* 连接线 - 水墨风格 */
+        .connection-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ink-line {
+            fill: none;
+            stroke: #2C2C2C;
+            stroke-width: 1;
+            opacity: 0.2;
+            stroke-dasharray: 5, 5;
+        }
+
+        /* 提示文字 */
+        .hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 13px;
+            color: #999;
+            letter-spacing: 3px;
+            z-index: 10;
+        }
+
+        /* 第二层级 - 详细页面 */
+        .detail-page {
+            min-height: 100vh;
+            padding: 80px 60px;
+            display: none;
+            background: #F8F6F1;
+        }
+
+        .detail-page.active {
+            display: block;
+        }
+
+        .detail-header {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            padding-bottom: 40px;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .color-indicator {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            flex-shrink: 0;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .detail-title-group h2 {
+            font-size: 36px;
+            font-weight: 300;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .detail-title-group .year {
+            font-size: 15px;
+            color: #666;
+            letter-spacing: 2px;
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+        }
+
+        .info-section h3 {
+            font-size: 18px;
+            font-weight: 400;
+            letter-spacing: 4px;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid;
+            display: inline-block;
+        }
+
+        .info-section p {
+            font-size: 15px;
+            line-height: 2.2;
+            color: #444;
+            margin-bottom: 30px;
+            text-align: justify;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            padding: 18px 0;
+            padding-left: 24px;
+            position: relative;
+            border-bottom: 1px solid rgba(0,0,0,0.06);
+            font-size: 15px;
+            line-height: 1.8;
+        }
+
+        .feature-list li::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+
+        /* 不同时期的主题色 */
+        .prehistoric .info-section h3 { border-color: #8B7355; color: #5C4A3A; }
+        .prehistoric .feature-list li::before { background: #8B7355; }
+        .prehistoric .color-indicator { background: linear-gradient(135deg, #8B7355, #5C4A3A); }
+
+        .pre-qin .info-section h3 { border-color: #9CA668; color: #7A8547; }
+        .pre-qin .feature-list li::before { background: #9CA668; }
+        .pre-qin .color-indicator { background: linear-gradient(135deg, #9CA668, #7A8547); }
+
+        .han .info-section h3 { border-color: #7B9E87; color: #5A7A66; }
+        .han .feature-list li::before { background: #7B9E87; }
+        .han .color-indicator { background: linear-gradient(135deg, #7B9E87, #5A7A66); }
+
+        .six .info-section h3 { border-color: #6A9A7A; color: #4A7A5A; }
+        .six .feature-list li::before { background: #6A9A7A; }
+        .six .color-indicator { background: linear-gradient(135deg, #6A9A7A, #4A7A5A); }
+
+        .tang .info-section h3 { border-color: #5A8A6A; color: #3A6A4A; }
+        .tang .feature-list li::before { background: #5A8A6A; }
+        .tang .color-indicator { background: linear-gradient(135deg, #5A8A6A, #3A6A4A); }
+
+        .song .info-section h3 { border-color: #7B9E87; color: #5A7A66; }
+        .song .feature-list li::before { background: #7B9E87; }
+        .song .color-indicator { background: linear-gradient(135deg, #A8C4B0, #7B9E87); }
+
+        .ming .info-section h3 { border-color: #1E3A5F; color: #0D1F3A; }
+        .ming .feature-list li::before { background: #1E3A5F; }
+        .ming .color-indicator { background: linear-gradient(135deg, #1E3A5F, #0D1F3A); }
+
+        .kiln-section {
+            margin-top: 40px;
+        }
+
+        .kiln-section h4 {
+            font-size: 14px;
+            color: #666;
+            letter-spacing: 3px;
+            margin-bottom: 20px;
+        }
+
+        .kiln-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .kiln-tag {
+            padding: 10px 20px;
+            border: 1px solid rgba(0,0,0,0.15);
+            font-size: 14px;
+            letter-spacing: 2px;
+            background: rgba(255,255,255,0.6);
+            transition: all 0.3s;
+        }
+
+        .kiln-tag:hover {
+            background: rgba(0,0,0,0.05);
+            transform: translateY(-2px);
+        }
+
+        /* 返回按钮 */
+        .back-btn {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            padding: 12px 24px;
+            background: transparent;
+            border: 1px solid rgba(0,0,0,0.3);
+            cursor: pointer;
+            font-size: 14px;
+            letter-spacing: 3px;
+            font-family: inherit;
+            z-index: 1000;
+            display: none;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(0,0,0,0.05);
+            border-color: rgba(0,0,0,0.5);
+        }
+
+        .back-btn.visible {
+            display: block;
+        }
+
+        /* 鼠标轨迹墨迹 - 更明显 */
+        .ink-drop {
+            position: fixed;
+            pointer-events: none;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(44,44,44,0.25) 0%, rgba(44,44,44,0.08) 40%, transparent 70%);
+            transform: translate(-50%, -50%);
+            animation: inkFade 2.5s ease-out forwards;
+            z-index: 5;
+            filter: blur(2px);
+        }
+
+        @keyframes inkFade {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 0.8; }
+            50% { opacity: 0.5; }
+            100% { transform: translate(-50%, -50%) scale(4); opacity: 0; }
+        }
+
+        /* 响应式 */
+        @media (max-width: 900px) {
+            .hero-title h1 {
+                font-size: 32px;
+                letter-spacing: 8px;
+            }
+
+            .ink-timeline {
+                height: 800px;
+            }
+
+            .era-node {
+                position: relative !important;
+                left: auto !important;
+                top: auto !important;
+                margin: 30px auto;
+            }
+
+            .era-label {
+                position: relative;
+                opacity: 1;
+                text-align: center;
+                margin-top: 20px;
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                cursor: auto;
+            }
+
+            .cursor, .cursor-follower {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 自定义光标 -->
+    <div class="cursor"></div>
+    <div class="cursor-follower"></div>
+
+    <!-- 返回按钮 -->
+    <button class="back-btn" id="backBtn" onclick="backToHome()">← 返回</button>
+
+    <!-- 首页 - 水墨时间轴 -->
+    <section class="hero" id="home">
+        <div class="hero-title">
+            <h1>长江陶瓷史</h1>
+            <div class="subtitle">从史前到明清</div>
+            <div class="seal">泥火</div>
+        </div>
+
+        <div class="ink-timeline">
+            <!-- SVG连接线 -->
+            <svg class="connection-svg" viewBox="0 0 1200 600">
+                <!-- 水墨风格虚线连接 - 按年代顺序连接 -->
+                <!-- 史前 -> 先秦 -->
+                <path class="ink-line" d="M 176 170 Q 250 285, 334 400" />
+                <!-- 先秦 -> 秦汉 -->
+                <path class="ink-line" d="M 334 400 Q 420 261, 506 122" />
+                <!-- 秦汉 -> 六朝 -->
+                <path class="ink-line" d="M 506 122 Q 588 228, 671 335" />
+                <!-- 六朝 -> 隋唐 -->
+                <path class="ink-line" d="M 671 335 Q 766 256, 861 177" />
+                <!-- 隋唐 -> 宋元 -->
+                <path class="ink-line" d="M 861 177 Q 707 329, 554 482" />
+                <!-- 宋元 -> 明清 -->
+                <path class="ink-line" d="M 554 482 Q 796 442, 1039 403" />
+            </svg>
+
+            <!-- 时期节点 - 散落布局 -->
+            <div class="era-node era-prehistoric" onclick="showDetail('prehistoric')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">史前</div>
+                    <div class="era-keyword">黑陶 · 彩陶</div>
+                </div>
+            </div>
+
+            <div class="era-node era-pre-qin" onclick="showDetail('pre-qin')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">先秦</div>
+                    <div class="era-keyword">原始瓷</div>
+                </div>
+            </div>
+
+            <div class="era-node era-han" onclick="showDetail('han')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">秦汉</div>
+                    <div class="era-keyword">成熟瓷器</div>
+                </div>
+            </div>
+
+            <div class="era-node era-six" onclick="showDetail('six')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">六朝</div>
+                    <div class="era-keyword">越窑</div>
+                </div>
+            </div>
+
+            <div class="era-node era-tang" onclick="showDetail('tang')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">隋唐</div>
+                    <div class="era-keyword">秘色瓷</div>
+                </div>
+            </div>
+
+            <div class="era-node era-song" onclick="showDetail('song')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">宋元</div>
+                    <div class="era-keyword">龙泉青瓷</div>
+                </div>
+            </div>
+
+            <div class="era-node era-ming" onclick="showDetail('ming')">
+                <div class="era-circle">
+                    <div class="ink-halo"></div>
+                </div>
+                <div class="era-label">
+                    <div class="era-name">明清</div>
+                    <div class="era-keyword">景德镇青花</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="hint">点击圆点探索各时期 · 移动鼠标感受墨迹</div>
+    </section>
+
+    <!-- 第二层级 - 详细页面 [内容同上，略] -->
+    <!-- 史前 -->
+    <section class="detail-page prehistoric" id="detail-prehistoric">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>史前时代</h2>
+                <div class="year">约公元前5000年 - 公元前2000年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>新石器时代，长江中下游先民创造了发达的陶器文化。河姆渡文化的黑陶、大溪文化的彩陶、良渚文化的磨光黑陶，代表了早期制陶工艺的高峰。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>河姆渡文化夹炭黑陶，采用泥条盘筑法</li>
+                    <li>良渚文化磨光黑陶，器形规整，胎薄质坚</li>
+                    <li>彩陶纹饰以几何纹、鱼纹、鸟纹为主</li>
+                    <li>出现原始瓷器雏形——硬陶与釉陶</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要文化遗址</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">河姆渡文化</span>
+                        <span class="kiln-tag">马家浜文化</span>
+                        <span class="kiln-tag">崧泽文化</span>
+                        <span class="kiln-tag">良渚文化</span>
+                        <span class="kiln-tag">大溪文化</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- [其他详细页面省略，保持与之前相同] -->
+    <!-- 先秦 -->
+    <section class="detail-page pre-qin" id="detail-pre-qin">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>先秦时期</h2>
+                <div class="year">公元前2000年 - 公元前221年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>商周时期，长江中下游地区开始烧制原始瓷器。春秋战国时期，原始青瓷工艺日趋成熟，为后来成熟瓷器的出现奠定了技术基础。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>商代出现原始青瓷，釉色青黄</li>
+                    <li>西周原始瓷豆、碗、盘等日用器增多</li>
+                    <li>春秋时期印纹硬陶与原始瓷并行发展</li>
+                    <li>吴越地区成为原始瓷烧造中心</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">吴城窑</span>
+                        <span class="kiln-tag">萧山窑</span>
+                        <span class="kiln-tag">德清窑</span>
+                        <span class="kiln-tag">绍兴窑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 秦汉 -->
+    <section class="detail-page han" id="detail-han">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>秦汉时期</h2>
+                <div class="year">公元前221年 - 公元220年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>东汉时期，成熟瓷器在长江中下游地区烧制成功，这是中国陶瓷史上的里程碑。釉色纯正，胎质致密，标志着原始瓷向成熟瓷的飞跃。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>东汉中晚期成熟青瓷诞生</li>
+                    <li>越窑前身——会稽郡瓷窑兴起</li>
+                    <li>青瓷釉色以青绿、青黄为主</li>
+                    <li>出现青瓷黑瓷并举的局面</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">上虞窑</span>
+                        <span class="kiln-tag">慈溪窑</span>
+                        <span class="kiln-tag">宁波窑</span>
+                        <span class="kiln-tag">永嘉窑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 六朝 -->
+    <section class="detail-page six" id="detail-six">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>六朝时期</h2>
+                <div class="year">公元220年 - 589年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>三国两晋南北朝，越窑体系正式形成。青瓷工艺精进，"千峰翠色"的越窑青瓷开始名扬天下。器形丰富，造型优美，青瓷进入第一个高峰。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>越窑体系确立，成为青瓷代表</li>
+                    <li>出现"秘色瓷" precursor</li>
+                    <li>莲花纹、忍冬纹等佛教题材流行</li>
+                    <li>点彩、褐斑装饰技法创新</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">越窑</span>
+                        <span class="kiln-tag">瓯窑</span>
+                        <span class="kiln-tag">婺州窑</span>
+                        <span class="kiln-tag">德清窑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 隋唐 -->
+    <section class="detail-page tang" id="detail-tang">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>隋唐时期</h2>
+                <div class="year">公元581年 - 907年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>唐代形成"南青北白"格局，越窑青瓷达到第一个高峰。五代时期秘色瓷诞生，代表了当时青瓷烧造的最高水平。长沙窑的釉下彩开创彩绘瓷先河。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>越窑青瓷"类玉类冰"，供奉皇室</li>
+                    <li>五代秘色瓷，釉色青碧如玉</li>
+                    <li>长沙窑釉下彩，开创彩绘先河</li>
+                    <li>出现茶具专用器，茶文化推动瓷业</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">越窑</span>
+                        <span class="kiln-tag">长沙窑</span>
+                        <span class="kiln-tag">寿州窑</span>
+                        <span class="kiln-tag">洪州窑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 宋元 -->
+    <section class="detail-page song" id="detail-song">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>宋元时期</h2>
+                <div class="year">公元960年 - 1368年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>宋代是青瓷的巅峰时代，龙泉窑创烧粉青、梅子青釉，南宋官窑建立。元代景德镇崛起，青花、釉里红创烧成功，预示着瓷器新时代的到来。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>龙泉窑粉青、梅子青，青瓷巅峰</li>
+                    <li>南宋官窑：紫口铁足，釉面开片</li>
+                    <li>景德镇浮梁瓷局设立</li>
+                    <li>青花、釉里红创烧，彩瓷时代来临</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">龙泉窑</span>
+                        <span class="kiln-tag">南宋官窑</span>
+                        <span class="kiln-tag">景德镇</span>
+                        <span class="kiln-tag">吉州窑</span>
+                        <span class="kiln-tag">建窑</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 明清 -->
+    <section class="detail-page ming" id="detail-ming">
+        <div class="detail-header">
+            <div class="color-indicator"></div>
+            <div class="detail-title-group">
+                <h2>明清时期</h2>
+                <div class="year">公元1368年 - 1911年</div>
+            </div>
+        </div>
+        <div class="content-grid">
+            <div class="info-section">
+                <h3>时代概述</h3>
+                <p>景德镇成为"瓷都"，御窑厂设立。青花瓷成熟，五彩、斗彩、粉彩等彩绘瓷蓬勃发展，中国瓷器通过海上丝绸之路行销世界。</p>
+                <h3>主要特征</h3>
+                <ul class="feature-list">
+                    <li>景德镇御窑厂，天下窑器所聚</li>
+                    <li>青花瓷成熟，"青花故事"流传</li>
+                    <li>斗彩、五彩、粉彩、珐琅彩争奇斗艳</li>
+                    <li>颜色釉高度发达，单色釉精品辈出</li>
+                </ul>
+            </div>
+            <div class="info-section">
+                <div class="kiln-section">
+                    <h4>主要窑口</h4>
+                    <div class="kiln-tags">
+                        <span class="kiln-tag">景德镇御窑</span>
+                        <span class="kiln-tag">德化窑</span>
+                        <span class="kiln-tag">宜兴紫砂</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // 自定义光标
+        const cursor = document.querySelector('.cursor');
+        const follower = document.querySelector('.cursor-follower');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+
+            setTimeout(() => {
+                follower.style.left = e.clientX + 'px';
+                follower.style.top = e.clientY + 'px';
+            }, 100);
+        });
+
+        // 鼠标悬停效果 - 带有颜色感应
+        let currentEraColor = null;
+
+        document.querySelectorAll('.era-node').forEach(node => {
+            node.addEventListener('mouseenter', () => {
+                cursor.style.transform = 'scale(1.8)';
+                follower.style.transform = 'scale(2)';
+                currentEraColor = getComputedStyle(node).getPropertyValue('--era-color').trim();
+            });
+            node.addEventListener('mouseleave', () => {
+                cursor.style.transform = 'scale(1)';
+                follower.style.transform = 'scale(1)';
+                currentEraColor = null;
+            });
+        });
+
+        // 水墨拖尾效果 - 更明显
+        let lastDrop = 0;
+        let dropCount = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            const now = Date.now();
+            if (now - lastDrop > 60) { // 更频繁生成墨点
+                // 主墨点
+                createInkDrop(e.clientX, e.clientY, 'main');
+
+                // 偶尔生成卫星墨点增加层次感
+                if (dropCount % 3 === 0) {
+                    const offsetX = (Math.random() - 0.5) * 40;
+                    const offsetY = (Math.random() - 0.5) * 40;
+                    setTimeout(() => {
+                        createInkDrop(e.clientX + offsetX, e.clientY + offsetY, 'satellite');
+                    }, 50);
+                }
+
+                dropCount++;
+                lastDrop = now;
+            }
+        });
+
+        function createInkDrop(x, y, type = 'main', color = null) {
+            const drop = document.createElement('div');
+            drop.className = 'ink-drop';
+
+            // 如果有传入颜色或当前悬浮在某个时期上，使用对应颜色
+            const inkColor = color || currentEraColor;
+            if (inkColor) {
+                // 转换为带透明度的颜色
+                const r = parseInt(inkColor.slice(1, 3), 16);
+                const g = parseInt(inkColor.slice(3, 5), 16);
+                const b = parseInt(inkColor.slice(5, 7), 16);
+                drop.style.background = `radial-gradient(circle, rgba(${r},${g},${b},0.3) 0%, rgba(${r},${g},${b},0.1) 40%, transparent 70%)`;
+            }
+
+            if (type === 'main') {
+                const size = Math.random() * 40 + 35; // 更大的墨点
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+            } else {
+                const size = Math.random() * 20 + 15; // 卫星墨点较小
+                drop.style.width = size + 'px';
+                drop.style.height = size + 'px';
+                drop.style.opacity = '0.6';
+            }
+
+            drop.style.left = x + 'px';
+            drop.style.top = y + 'px';
+            document.body.appendChild(drop);
+
+            setTimeout(() => {
+                drop.remove();
+            }, 2500);
+        }
+
+        // 添加额外的墨迹飞溅效果
+        document.addEventListener('click', (e) => {
+            // 点击时产生墨迹飞溅
+            for (let i = 0; i < 5; i++) {
+                const angle = (Math.PI * 2 * i) / 5;
+                const distance = 30 + Math.random() * 30;
+                const x = e.clientX + Math.cos(angle) * distance;
+                const y = e.clientY + Math.sin(angle) * distance;
+
+                setTimeout(() => {
+                    createInkDrop(x, y, 'satellite', currentEraColor);
+                }, i * 30);
+            }
+        });
+
+        // 页面切换
+        function showDetail(era) {
+            document.getElementById('home').style.display = 'none';
+            document.querySelectorAll('.detail-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('detail-' + era).classList.add('active');
+            document.getElementById('backBtn').classList.add('visible');
+            window.scrollTo(0, 0);
+        }
+
+        function backToHome() {
+            document.getElementById('home').style.display = 'flex';
+            document.querySelectorAll('.detail-page').forEach(page => {
+                page.classList.remove('active');
+            });
+            document.getElementById('backBtn').classList.remove('visible');
+            window.scrollTo(0, 0);
+        }
+
+        // 随机微动效果 - 与晕染动画同步
+        document.querySelectorAll('.era-node').forEach((node, index) => {
+            setInterval(() => {
+                const randomX = (Math.random() - 0.5) * 8;
+                const randomY = (Math.random() - 0.5) * 8;
+                node.style.transform = `translate(${randomX}px, ${randomY}px)`;
+            }, 4000 + index * 600);
+        });
+    </script>
+
+</body>
+</html>
